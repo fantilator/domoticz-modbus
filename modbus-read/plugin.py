@@ -452,8 +452,13 @@ class BasePlugin:
         # DECODE DATA VALUE
         ########################################
         try:
-          if (self.Domoticz_Setting_Data_Type == "noco"): value = data.registers[0]
-          if (self.Domoticz_Setting_Data_Type == "bool"): value = bool(data.registers[0])
+          if (self.Domoticz_Setting_Communication_Mode == "rtu" or self.Domoticz_Setting_Communication_Mode == "ascii" or self.Domoticz_Setting_Communication_Mode == "rtutcp"):
+            if (self.Domoticz_Setting_Data_Type == "noco"): value = data.registers[0]
+            if (self.Domoticz_Setting_Data_Type == "bool"): value = bool(data.registers[0])
+          if (self.Domoticz_Setting_Communication_Mode == "tcpip"):
+            res = str(data)[1:-1]
+            if (self.Domoticz_Setting_Data_Type == "noco"): value = res
+            if (self.Domoticz_Setting_Data_Type == "bool"): value = bool(res)
           if (self.Domoticz_Setting_Data_Type == "int8LSB"):
             ignored = decoder.skip_bytes(1)
             value = decoder.decode_8bit_int()
